@@ -1,0 +1,15 @@
+version: "3.3" services:
+  loadballance:
+    image: nginx:latest
+    volumes:
+    - './nginx.conf.d:/etc/nginx/conf.d'
+    - '.:/usr/share/nginx/html'
+    links:
+      - bolek
+      - lolek
+    ports:
+      - 80:80
+  bolek:
+    image: tsentyrion/bolek
+  lolek:
+    image: tsentyrion/lolek
