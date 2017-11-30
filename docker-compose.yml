@@ -1,0 +1,26 @@
+lb:
+    image: nginx
+    volumes:
+      - './nginx.conf.d:/etc/nginx/conf.d'
+      - '.:/var/www'
+    links:
+      - lolek
+      - bolek
+    ports:
+      - 80:80
+    restart: 'no'
+    
+lolek:
+    image: tsentyrion/lolek
+    volumes:
+      - './server/www/lolek:/var/www/server/www/lolek'
+
+   
+ 
+bolek:
+    image: tsentyrion/bolek
+    volumes:
+      - './server/www/lolek:/var/www/server/www/lolek'
+
+
+
