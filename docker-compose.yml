@@ -1,25 +1,38 @@
-lb:
-    image: nginx
-    volumes:
-      - './nginx.conf.d:/etc/nginx/conf.d'
-      - '.:/var/www'
-    links:
-      - lolek
-      - bolek
-    ports:
-      - 80:80
-    restart: 'no'
+version: "3"
+services: 
+    lb:
+        image: nginx
+        volumes:
+          - './nginx.conf.d:/etc/nginx/conf.d'
+          - '.:/var/www'
+        ports:
+          - 80:80
     
-lolek:
-    image: tsentyrion/lolek
-    volumes:
-      - './server/www/lolek:/var/www/server/www/lolek'
+    lolek: 
+        image: tsentyrion/lolek
+        volumes:
+          - 'shar-dir1:/usr/share/nginx/html'
+        deploy:
+          mode: replicated
+          replicas: 3
+          restart_policy:
+            condition: on-failure
+          #placement:
+            #constraints: [node.role == manager] 
 
-   
- 
-bolek:
-    image: tsentyrion/bolek
-    volumes:
-      - './server/www/lolek:/var/www/server/www/lolek'
+    bolek: 
+        image: tsentyrion/bolek
+        volumes:
+          - 'shar-dir2:/usr/share/nginx/html'
+        deploy:
+          mode: replicated
+          replicas: 3
+          restart_policy:
+            condition: on-failure
+          #placement:
+            #constraints: [node.role == manager]
 
+volumes: 
+    shar-dir1:
+    shar-dir2:
 
